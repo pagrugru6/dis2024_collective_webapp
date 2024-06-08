@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Skill</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <h1>Add Skill to Your Profile</h1>
+    <form action="{{ url_for('add_skill') }}" method="POST">
+        <label for="existing_skill">Select an Existing Skill:</label>
+        <select id="existing_skill" name="existing_skill" style="width: 100%;">
+            <option value="">--Select a Skill--</option>
+            {% for skill in skills %}
+                <option value="{{ skill.id }}">{{ skill.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="skill_name">Or Enter a New Skill:</label>
+        <input type="text" id="skill_name" name="skill_name">
+        <br>
+        <label for="skill_description">Skill Description:</label>
+        <textarea id="skill_description" name="skill_description"></textarea>
+        <br>
+        <button type="submit">Add Skill</button>
+    </form>
+    <a href="{{ url_for('profile') }}">Back to Profile</a>
+
+    <script>
+        $(document).ready(function() {
+            $('#existing_skill').select2();
+        });
+    </script>
+</body>
+</html>

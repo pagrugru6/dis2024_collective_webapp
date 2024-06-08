@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Collective Web App</title>
+</head>
+<body>
+    <h1>Welcome to the Collective Web App</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('browse_collectives') }}">Browse Collectives</a></li>
+            <li><a href="{{ url_for('browse_projects') }}">Browse Projects</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

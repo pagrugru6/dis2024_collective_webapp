@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ project.name }}</title>
+</head>
+<body>
+    <h1>{{ project.name }}</h1>
+    <p>{{ project.description }}</p>
+
+    <h2>Organized by the following Collectives:</h2>
+        <ul>
+            {% for collective in collectives %}
+            <li>
+                <a href="{{ url_for('collective_home', collective_id=collective.id) }}">{{ collective.name }}</a> - {{ collective.description }}
+            </li>
+            {% endfor %}
+        </ul>
+    <h2>Skills that would be helpful:</h2>
+    <ul>
+        {% for skill in skills %}
+        <li>
+            {{ skill.name }}</a> - {{ skill.description }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% if is_member %}
+        <h2>Members</h2>
+                <ul>
+                    {% for member in members %}
+                    <li>
+                        <a href="{{ url_for('profilePage', username=member.username) }}">{{ member.name }}</a> - {{ member.bio }}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+        <h2>Forum</h2>
+        <ul>
+        {% for message in messages %}
+            <li>{{ message.message }} - {{ message.sender_name }} - {{ message.timestamp | short_timestamp}}</li>
+        {% endfor %}
+        </ul>
+        <form action="{{ url_for('post_project_message', project_id=project.id) }}" method="POST">
+            <textarea name="message" placeholder="Enter your message"></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <form action="{{ url_for('edit_project', project_id=project.id) }}" method="GET">
+            <button type="submit">Edit Project</button>
+        </form>
+    {% else %}
+        <form action="{{ url_for('join_project', project_id=project.id) }}" method="POST">
+            <button type="submit">Join Project</button>
+        </form>
+        <p>You are not a participant in this project.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

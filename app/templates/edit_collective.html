@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Collective</title>
+</head>
+<body>
+    <h1>Edit Collective</h1>
+    <form action="{{ url_for('edit_collective', collective_id=collective.id) }}" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ collective.name }}" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>{{ collective.description }}</textarea>
+        <br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{ collective.location }}" required>
+        <br>
+        <button type="submit">Save Changes</button>
+    </form>
+    <form action="{{ url_for('delete_collective', collective_id=collective.id) }}" method="POST">
+        <button type="submit">Delete Collective</button>
+    </form>
+    <a href="{{ url_for('collective_home', collective_id=collective.id) }}">Back to Collective</a>
+</body>
+</html>

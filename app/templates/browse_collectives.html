@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Collectives</title>
+</head>
+<body>
+    <h1>Browse Collectives</h1>
+    <ul>
+    <h2>Filter by Location</h2>
+    <ul>
+        <li><a href="{{ url_for('browse_collectives') }}">All</a></li>
+        {% for location in locations %}
+            <li><a href="{{ url_for('filter_collectives_by_location', location=location) }}">{{ location }}</a></li>
+        {% endfor %}
+    </ul>
+    {% if collectives_empty %}
+        No collectives... Create one!
+    {% else %}
+        {% for collective in collectives %}
+        <li><a href="{{ url_for('collective_home', collective_id=collective.id) }}">{{ collective.name }}</a> - {{ collective.description }}</li>
+        {% endfor %}
+    {% endif %}
+    </ul>
+    {% if logged_in %}
+        <a href="{{ url_for('create_collective') }}">Create New Collective</a>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Log in</a> to create a new collective.</p>
+    {% endif %}
+    <ul>
+    {% if logged_in %}
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    {% else %}
+        <a href="{{ url_for('startup') }}">Back to Startup Screen</a>
+    {% endif %}
+</body>
+</html>

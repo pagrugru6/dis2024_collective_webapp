@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invitations</title>
+    <script>
+        function fetchInvitations() {
+            fetch('/get_invitations')
+                .then(response => response.json())
+                .then(data => {
+                    const invitationsBox = document.getElementById('invitations-box');
+                    invitationsBox.innerHTML = '';
+                    data.forEach(invitation => {
+                        const invitationElement = document.createElement('div');
+                        invitationElement.textContent = `Invited by ${invitation.inviter_id} to collective ${invitation.collective_id}`;
+                        invitationsBox.appendChild(invitationElement);
+                    });
+                });
+        }
+
+        setInterval(fetchInvitations, 10000);  // Poll every 10 seconds
+    </script>
+</head>
+<body>
+    <h1>Invitations</h1>
+    <div id="invitations-box" style="border: 1px solid black; height: 300px; overflow-y: scroll;"></div>
+</body>
+</html>

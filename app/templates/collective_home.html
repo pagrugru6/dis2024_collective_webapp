@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ collective.name }}</title>
+</head>
+<body>
+    <h1>{{ collective.name }}</h1>
+    <p>{{ collective.description }}</p>
+
+    {% if is_member %}
+        <h2>Projects</h2>
+        <ul>
+            {% for project in projects %}
+            <li>
+                <a href="{{ url_for('project_home', project_id=project.id) }}">{{ project.name }}</a> - {{ project.description }}
+                <br>
+                <small>Organized by: 
+                {% for collective in project.collectives %}
+                    <a href="{{ url_for('collective_home', collective_id=collective.id) }}">{{ collective.name }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                </small>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('create_project', collective_id=collective.id) }}">Create New Project</a>
+
+        <h2>Members</h2>
+        <ul>
+            {% for member in members %}
+            <li>
+                <a href="{{ url_for('profilePage', username=member.username) }}">{{ member.name }}</a> - {{ member.bio }}
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <h2>Forum</h2>
+        <ul>
+        {% for message in messages %}
+            <li>{{ message.message }} - {{ message.sender_name }} - {{ message.timestamp | short_timestamp}}</li>
+        {% endfor %}
+        </ul>
+        <form action="{{ url_for('post_collective_message', collective_id=collective.id) }}" method="POST">
+            <textarea name="message" placeholder="Enter your message"></textarea>
+            <button type="submit">Send</button>
+        </form>
+        {% if is_member %}
+        <form action="{{ url_for('edit_collective', collective_id=collective.id) }}" method="GET">
+            <button type="submit">Edit Collective</button>
+        </form>
+{% endif %}
+    {% else %}
+        <form action="{{ url_for('join_collective', collective_id=collective.id) }}" method="POST">
+            <button type="submit">Join Collective</button>
+        </form>
+        <p>You are not a member of this collective.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
+

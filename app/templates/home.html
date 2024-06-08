@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.name }}</h1>
+    <a href="{{ url_for('profile') }}">Edit Profile</a> |
+    <a href="{{ url_for('browse_collectives') }}">Browse Collectives</a> |
+    <a href="{{ url_for('browse_projects') }}">Browse Projects</a> |
+    <a href="{{ url_for('logout') }}">Logout</a>
+    
+    <h2>Your Collectives</h2>
+    <ul>
+    {% for collective in collectives %}
+        <li><a href="{{ url_for('collective_home', collective_id=collective.id) }}">{{ collective.name }}</a> - {{ collective.description }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h2>Your Projects</h2>
+    <ul>
+    {% for project in projects %}
+        <li><a href="{{ url_for('project_home', project_id=project.id) }}">{{ project.name }}</a> - {{ project.description }}</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Your Skills</h2>
+    <ul>
+    {% for skill in skills %}
+        <li>{{ skill.name }}</a> - {{ skill.description }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

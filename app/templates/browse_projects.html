@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Projects</title>
+</head>
+<body>
+    <h1>Browse Projects</h1>
+    <ul>
+    <h2>Filter by Skill</h2>
+    <ul>
+        <li><a href="{{ url_for('browse_projects') }}">All</a></li>
+        {% for skill in skills %}
+            <li><a href="{{ url_for('filter_projects_by_skill', skill_id=skill.id) }}">{{ skill.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% if projects_empty %}
+        No projects... Join a collective to create some!
+    {% else %}
+        {% for project in projects %}
+        <li>
+            <a href="{{ url_for('project_home', project_id=project.id) }}">{{ project.name }}</a> - {{ project.description }}
+            <br>
+            <small>Organized by: 
+            {% for collective in collectives_for_projects[project.id] %}
+                <a href="{{ url_for('collective_home', collective_id=collective.id) }}">{{ collective.name }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            </small>
+        </li>
+        {% endfor %}
+    {% endif %}
+    
+    </ul>
+    {% if logged_in %}
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    {% else %}
+        <a href="{{ url_for('startup') }}">Back to Startup Screen</a>
+    {% endif %}
+</body>
+</html>

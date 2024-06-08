@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Chat</title>
+    <script>
+        let lastMessageId = 0;
+
+        function fetchMessages() {
+            const projectId = document.getElementById('project-id').value;
+            fetch(`/get_project_messages?project_id=${projectId}&last_message_id=${lastMessageId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const chatBox = document.getElementById('chat-box');
+                    data.forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.textContent = `${message.sender_id}: ${message.message}`;
+                        chatBox.appendChild(messageElement);
+                        lastMessageId = message.id;
+                    });
+                });
+        }
+
+        function sendMessage() {
+            const projectId = document.getElementById('project-id').value;
+            const message = document.getElementById('message').value;
+
+            fetch('/send_project_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `project_id=${projectId}&message=${message}`
+            }).then(() => {
+                document.getElementById('message').value = '';
+                fetchMessages();
+            });
+        }
+
+        setInterval(fetchMessages, 3000);  // Poll every 3 seconds
+    </script>
+</head>
+<body>
+    <h1>Project Chat</h1>
+    <input type="hidden" id="project-id" value="1"><!-- Replace with actual project ID -->
+    <div id="chat-box" style="border: 1px solid black; height: 300px; overflow-y: scroll;"></div>
+    <input type="text" id="message" placeholder="Message"><br>
+    <button onclick="sendMessage()">Send</button>
+</body>
+</html>
